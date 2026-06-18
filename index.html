@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONIC | Crecimiento Exponencial</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-purple: #6a00f4;
+            --primary-orange: #ff5400;
+            --primary-magenta: #bc00dd;
+            --primary-lime: #c5f700;
+            
+            --secondary-pink: #ff0054;
+            --secondary-yellow: #fea500;
+            --secondary-cyan: #4cc9f0;
+            --secondary-green: #66ff83;
+            --dark-grey: #363836;
+            --light-bg: #f8f9fa;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--white);
+            color: var(--dark-grey);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .font-exo {
+            font-family: 'Exo', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Header / Navigation */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            font-size: 28px;
+            letter-spacing: 1px;
+            color: var(--dark-grey);
+        }
+
+        .logo-svg {
+            height: 35px;
+            margin-right: 10px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--dark-grey);
+            font-weight: 600;
+            font-size: 14px;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-purple);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after,
+        .nav-menu a.active::after {
+            width: 100%;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--primary-purple);
+        }
+
+        .btn-cta-nav {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-magenta));
+            color: var(--white) !important;
+            padding: 8px 25px;
+            border-radius: 50px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+        }
+
+        .btn-cta-nav::after {
+            display: none !important;
+        }
+
+        .btn-cta-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(106, 0, 244, 0.3);
+        }
+
+        /* Hamburger Menu Button (Mobile only) */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 6px;
+            border: none;
+            background: none;
+            padding: 5px;
+            z-index: 1100;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 28px;
+            height: 3px;
+            background-color: var(--dark-grey);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        /* Hamburger Animation when Active */
+        .hamburger.open span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+            background-color: var(--primary-purple);
+        }
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.open span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+            background-color: var(--primary-purple);
+        }
+
+        /* Mobile Dropdown Menu Container */
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 320px;
+            height: 100vh;
+            background-color: var(--white);
+            box-shadow: -5px 0 30px rgba(0,0,0,0.1);
+            z-index: 1050;
+            display: flex;
+            flex-direction: column;
+            padding: 100px 30px 40px 30px;
+            gap: 20px;
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mobile-overlay.open {
+            right: 0;
+        }
+
+        .mobile-overlay a {
+            text-decoration: none;
+            color: var(--dark-grey);
+            font-size: 18px;
+            font-weight: 600;
+            font-family: 'Exo', sans-serif;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-overlay a.active {
+            color: var(--primary-purple);
+            border-bottom-color: var(--primary-purple);
+        }
+
+        .mobile-overlay .btn-cta-mobile {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-magenta));
+            color: var(--white);
+            text-align: center;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            border: none;
+        }
+
+        /* Background Blur Overlay */
+        .menu-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0,0,0,0.4);
+            backdrop-filter: blur(3px);
+            z-index: 1040;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+
+        .menu-backdrop.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Windows / View Panels System */
+        .window-panel {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        .window-panel.active-window {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero Section (Inicio) */
+        .hero {
+            background: radial-gradient(circle at 90% 10%, rgba(188, 0, 221, 0.08), transparent 40%),
+                        radial-gradient(circle at 10% 80%, rgba(106, 0, 244, 0.05), transparent 50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 60px 20px;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 46px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--dark-grey);
+        }
+
+        .hero-content h1 span.highlight {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-tagline {
+            font-size: 20px;
+            color: var(--primary-orange);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .hero-description {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 35px;
+            max-width: 600px;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn-primary {
+            background: var(--primary-purple);
+            color: var(--white);
+            padding: 15px 35px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(106, 0, 244, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: #5200c4;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(106, 0, 244, 0.3);
+        }
+
+        .btn-secondary {
+            border: 2px solid var(--dark-grey);
+            color: var(--dark-grey);
+            padding: 13px 35px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--dark-grey);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .hero-graphics {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .poly-shape {
+            width: 100%;
+            max-width: 450px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
+        }
+
+        /* Pillars Section (Propuesta) */
+        .pillars {
+            background-color: var(--light-bg);
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 36px;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--primary-orange);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            color: #777;
+            max-width: 700px;
+            margin: 20px auto 60px auto;
+            font-size: 16px;
+        }
+
+        .pillars-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .pillar-card {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: left;
+            border-top: 5px solid var(--primary-purple);
+        }
+
+        .pillar-card:nth-child(2) { border-top-color: var(--primary-orange); }
+        .pillar-card:nth-child(3) { border-top-color: var(--primary-magenta); }
+
+        .pillar-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+        }
+
+        .pillar-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 24px;
+            color: white;
+        }
+
+        .pi-1 { background-color: var(--primary-purple); }
+        .pi-2 { background-color: var(--primary-orange); }
+        .pi-3 { background-color: var(--primary-magenta); }
+
+        .pillar-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 80px 20px;
+        }
+
+        .services-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: var(--white);
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 35px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--secondary-cyan);
+        }
+
+        .service-card:hover {
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            transform: translateY(-3px);
+            border-color: transparent;
+        }
+
+        .service-card h4 {
+            font-family: 'Exo', sans-serif;
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Methodology */
+        .methodology {
+            padding: 80px 20px;
+            background-color: var(--dark-grey);
+            color: var(--white);
+        }
+
+        .methodology .section-title { color: var(--white); }
+        .methodology .section-subtitle { color: #bbb; }
+
+        .timeline {
+            max-width: 1000px;
+            margin: 50px auto 0 auto;
+            position: relative;
+        }
+
+        .timeline-step {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-orange));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Exo', sans-serif;
+            font-weight: 700;
+            font-size: 22px;
+            color: var(--white);
+        }
+
+        .step-content h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--primary-lime);
+        }
+
+        .step-details {
+            list-style-type: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .step-tag {
+            background: rgba(255,255,255,0.08);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #ddd;
+        }
+
+        /* Benefits Panel */
+        .benefits {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #5100c4 0%, #a100bd 100%);
+            color: var(--white);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .benefits-container {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .benefits h2 {
+            font-size: 36px;
+            margin-bottom: 50px;
+        }
+
+        .benefits-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+        }
+
+        .benefit-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .benefit-item:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .benefit-item p {
+            font-family: 'Exo', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 80px 20px;
+            background-color: var(--light-bg);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contact-box {
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+
+        .instagram-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: var(--white);
+            text-decoration: none;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-family: 'Exo', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 20px rgba(220, 39, 67, 0.3);
+        }
+
+        .instagram-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(220, 39, 67, 0.5);
+        }
+
+        .instagram-icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a1b1a;
+            color: #888;
+            padding: 40px 20px 30px 20px;
+            font-size: 14px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #2d2e2d;
+            padding-bottom: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .footer-logo { color: var(--white); }
+        .footer-info { text-align: right; }
+        .footer-tagline {
+            color: var(--white);
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .copyright { text-align: center; width: 100%; }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            .nav-menu {
+                display: none; /* Hide computer tabs menu */
+            }
+            .hamburger {
+                display: flex; /* Show dropdown menu trigger */
+            }
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 40px 15px;
+            }
+            .hero-content h1 { font-size: 34px; }
+            .cta-group { justify-content: center; }
+            .footer-container { flex-direction: column; text-align: center; }
+            .footer-info { text-align: center; }
+            .timeline-step {
+                grid-template-columns: 1fr;
+                justify-items: center;
+                text-align: center;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo" onclick="switchWindow('inicio', event)">
+                <svg class="logo-svg" viewBox="0 0 500 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="40" fill="#6a00f4"/>
+                    <path d="M50 50 L85 30 L85 70 Z" fill="#ff0054"/>
+                    <circle cx="150" cy="50" r="40" fill="#ff5400"/>
+                    <rect x="210" y="10" width="80" height="80" fill="#c5f700"/>
+                    <path d="M210 90 L290 10 Z" stroke="#6a00f4" stroke-width="10"/>
+                    <rect x="310" y="10" width="20" height="80" fill="#4cc9f0"/>
+                    <circle cx="410" cy="50" r="40" fill="#bc00dd"/>
+                    <path d="M410 50 L445 30 L445 70 Z" fill="#fea500"/>
+                </svg>
+                <span style="font-weight:700; font-family:'Exo';">CONIC</span>
+            </a>
+            
+            <!-- Computer Menu -->
+            <ul class="nav-menu">
+                <li><a href="#inicio" class="nav-link active" onclick="switchWindow('inicio', event)">Inicio</a></li>
+                <li><a href="#propuesta" class="nav-link" onclick="switchWindow('propuesta', event)">Propuesta</a></li>
+                <li><a href="#servicios" class="nav-link" onclick="switchWindow('servicios', event)">Servicios</a></li>
+                <li><a href="#metodologia" class="nav-link" onclick="switchWindow('metodologia', event)">Metodología</a></li>
+                <li><a href="#beneficios" class="nav-link" onclick="switchWindow('beneficios', event)">Beneficios</a></li>
+                <li><a href="#contacto" class="btn-cta-nav" onclick="switchWindow('contacto', event)">Contacto</a></li>
+            </ul>
+
+            <!-- Mobile Hamburger Trigger -->
+            <button class="hamburger" id="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Abrir Menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Dropdown Sidebar Menu -->
+    <div class="menu-backdrop" id="menu-backdrop" onclick="toggleMobileMenu()"></div>
+    <nav class="mobile-overlay" id="mobile-menu">
+        <a href="#inicio" class="mobile-link active" onclick="switchWindow('inicio', event)">Inicio</a>
+        <a href="#propuesta" class="mobile-link" onclick="switchWindow('propuesta', event)">Propuesta</a>
+        <a href="#servicios" class="mobile-link" onclick="switchWindow('servicios', event)">Servicios</a>
+        <a href="#metodologia" class="mobile-link" onclick="switchWindow('metodologia', event)">Metodología</a>
+        <a href="#beneficios" class="mobile-link" onclick="switchWindow('beneficios', event)">Beneficios</a>
+        <a href="#contacto" class="btn-cta-mobile" onclick="switchWindow('contacto', event)">Contacto</a>
+    </nav>
+
+    <!-- INICIO WINDOW -->
+    <div id="window-inicio" class="window-panel active-window">
+        <section class="hero">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <span class="hero-tagline">Crecimiento Exponencial</span>
+                    <h1>La agencia de marketing <br><span class="highlight">que sí se compromete</span> con el cliente.</h1>
+                    <p class="hero-description">
+                        Estamos 100% enfocados en automatizar y maximizar las ventas por medio de procesos digitales avanzados y reingeniería estratégica de datos.
+                    </p>
+                    <div class="cta-group">
+                        <a href="#contacto" class="btn-primary" onclick="switchWindow('contacto', event)">Maximizar Ventas</a>
+                        <a href="#servicios" class="btn-secondary" onclick="switchWindow('servicios', event)">Ver Servicios</a>
+                    </div>
+                </div>
+                <div class="hero-graphics">
+                    <svg class="poly-shape" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="50,100 200,30 350,120 280,300 100,350" fill="none" stroke="#6a00f4" stroke-width="2"/>
+                        <polygon points="50,100 200,30 220,180" fill="#6a00f4" opacity="0.15"/>
+                        <polygon points="200,30 350,120 220,180" fill="#ff5400" opacity="0.2"/>
+                        <polygon points="350,120 280,300 220,180" fill="#bc00dd" opacity="0.25"/>
+                        <polygon points="280,300 100,350 220,180" fill="#c5f700" opacity="0.3"/>
+                        <polygon points="100,350 50,100 220,180" fill="#ff0054" opacity="0.15"/>
+                        <circle cx="50" cy="100" r="6" fill="#6a00f4"/>
+                        <circle cx="200" cy="30" r="6" fill="#ff5400"/>
+                        <circle cx="350" cy="120" r="6" fill="#bc00dd"/>
+                        <circle cx="280" cy="300" r="6" fill="#c5f700"/>
+                        <circle cx="100" cy="350" r="6" fill="#ff0054"/>
+                    </svg>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PROPUESTA WINDOW -->
+    <div id="window-propuesta" class="window-panel">
+        <section class="pillars">
+            <h2 class="section-title">Nuestro Enfoque Estratégico</h2>
+            <p class="section-subtitle">
+                Somos una agencia que analiza, propone e innova los procesos de nuestros clientes, tomando en cuenta la inversión; incrementando la satisfacción del usuario final que por consecuencia se refleja en los ingresos de nuestros socios.
+            </p>
+            <div class="pillars-grid">
+                <div class="pillar-card">
+                    <div class="pillar-icon pi-1">▲</div>
+                    <h3>Innovación en Procesos de Venta</h3>
+                    <p>Rediseñamos la forma en que conectas con tus compradores para acortar ciclos y aumentar eficiencia.</p>
+                </div>
+                <div class="pillar-card">
+                    <div class="pillar-icon pi-2">■</div>
+                    <h3>Diferenciación de Marca</h3>
+                    <p>Revelamos el alma de tu empresa a través de su esencia y de los valores únicos que la caracterizan.</p>
+                </div>
+                <div class="pillar-card">
+                    <div class="pillar-icon pi-3">●</div>
+                    <h3>Estrategias de Prospección Digitales</h3>
+                    <p>Creamos embudos automatizados e inteligentes para atraer clientes calificados de manera constante.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- SERVICIOS WINDOW -->
+    <div id="window-servicios" class="window-panel">
+        <section class="services">
+            <div style="text-align: center;">
+                <h2 class="section-title">Servicios Digitales Integrales</h2>
+                <p class="section-subtitle">Soluciones modulares diseñadas para la era tecnológica competitiva.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card" style="border-left-color: var(--primary-purple);">
+                    <h4>Desarrollo de Procesos de Venta Digital</h4>
+                    <p>Analizamos los procesos (know-how) de nuestro cliente para generarle una propuesta de valor que le reditúe el potencial de competir por medio de canales y plataformas digitales.</p>
+                </div>
+                <div class="service-card" style="border-left-color: var(--primary-orange);">
+                    <h4>Creación de Imagen de Marca</h4>
+                    <p>Compartimos ideas, conocimientos y experiencias para ayudarte a crear una semilla poderosa. Diseñamos la identidad corporativa integral para comunicar de forma clara y positiva.</p>
+                </div>
+                <div class="service-card" style="border-left-color: var(--primary-magenta);">
+                    <h4>Creación de Canales Digitales</h4>
+                    <p>Utilizamos las plataformas digitales para desarrollar canales dinámicos (live / offline) para aumentar la prospección, el conocimiento y la viralización de la marca.</p>
+                </div>
+                <div class="service-card" style="border-left-color: var(--secondary-cyan);">
+                    <h4>Estrategias de Comercialización y Comunicación</h4>
+                    <p>Planificamos una serie de acciones estructuradas para determinar procesos de marketing logrando el aumento de ventas y la mayor participación en el mercado digital.</p>
+                </div>
+                <div class="service-card" style="border-left-color: var(--secondary-green);">
+                    <h4>Marketing Digital (SEO + Redes Sociales)</h4>
+                    <p>Analizamos desde varias perspectivas el producto y mercado para crear campañas de publicidad y canales digitales de alto impacto de conversión.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- METODOLOGIA WINDOW -->
+    <div id="window-metodologia" class="window-panel">
+        <section class="methodology">
+            <div style="text-align: center;">
+                <h2 class="section-title">¿Cómo lo hacemos?</h2>
+                <p class="section-subtitle">Nuestra metodología de optimización y mejora continua basada en datos.</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Análisis e Indicadores</h3>
+                        <p>Analizamos las estrategias actuales y evaluamos detalladamente el grado de automatización y digitalización del modelo de negocio.</p>
+                        <div class="step-details">
+                            <span class="step-tag">Estrategias actuales</span>
+                            <span class="step-tag">Definir Indicadores</span>
+                            <span class="step-tag">Procesos</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Estrategia y Desarrollo</h3>
+                        <p>Presentamos la recomendación y desarrollamos una propuesta personalizada construyendo las herramientas necesarias.</p>
+                        <div class="step-details">
+                            <span class="step-tag">Propuesta</span>
+                            <span class="step-tag">Plataformas</span>
+                            <span class="step-tag">Herramientas</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Ejecución y Automatización</h3>
+                        <p>Implementamos las soluciones tecnológicas y activamos los flujos de automatización comercial en vivo.</p>
+                        <div class="step-details">
+                            <span class="step-tag">Implementación</span>
+                            <span class="step-tag">Automatizaciones</span>
+                            <span class="step-tag">Monitoreo</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Reingeniería y Optimización</h3>
+                        <p>Realizamos reingeniería de datos generados por la propuesta. Analizamos resultados, rediseñamos e implementamos mejoras inmediatas.</p>
+                        <div class="step-details">
+                            <span class="step-tag">Análisis de datos</span>
+                            <span class="step-tag">Reportes</span>
+                            <span class="step-tag">Mejoría Continua</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- BENEFICIOS WINDOW -->
+    <div id="window-beneficios" class="window-panel">
+        <section class="benefits">
+            <div class="benefits-container">
+                <h2>Beneficios de CONIC</h2>
+                <div class="benefits-list">
+                    <div class="benefit-item"><p>Estrategias Innovadoras</p></div>
+                    <div class="benefit-item"><p>Desarrollos Digitales de Punta</p></div>
+                    <div class="benefit-item"><p>Tarifas de Marketing Comprometidas</p></div>
+                    <div class="benefit-item"><p>Aumento en Tasas de Conversión</p></div>
+                    <div class="benefit-item"><p>Transformación de Procesos de Venta</p></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- CONTACTO WINDOW -->
+    <div id="window-contacto" class="window-panel">
+        <section class="contact-section">
+            <div class="contact-box">
+                <h2 class="section-title" style="margin-bottom: 15px;">¡Hablemos de tu Crecimiento!</h2>
+                <p style="color: #666; margin-bottom: 30px;">¿Listo para transformar tus procesos de venta y optimizar tus resultados digitales?</p>
+                <h3 style="margin-bottom: 15px; font-family: 'Exo', sans-serif;">Síguenos en Redes Sociales</h3>
+                <a href="https://www.instagram.com/conic.mx" target="_blank" class="instagram-btn">
+                    <svg class="instagram-icon" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                    </svg>
+                    @conic.mx
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h3 style="font-size: 24px; letter-spacing: 1px;">CONIC</h3>
+                <p style="margin-top: 5px;">Crecimiento Exponencial</p>
+            </div>
+            <div class="footer-info">
+                <p class="footer-tagline">La agencia de marketing que sí se compromete.</p>
+                <p style="margin-top: 10px; font-size:13px;">Procesos Digitales Automatizados © 2026</p>
+            </div>
+        </div>
+        <div class="copyright">
+            Todos los derechos reservados. Identidad visual regulada bajo el Manual Corporativo CONIC.
+        </div>
+    </footer>
+
+    <!-- JavaScript to manage App Windows & Mobile Expandable Menu System -->
+    <script>
+        // 1. Function to open/close the mobile hamburger dropdown sidebar menu
+        function toggleMobileMenu() {
+            const hamburger = document.getElementById('hamburger-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const backdrop = document.getElementById('menu-backdrop');
+
+            hamburger.classList.toggle('open');
+            mobileMenu.classList.toggle('open');
+            backdrop.classList.toggle('open');
+        }
+
+        // 2. Interactive Navigation Window Switching & Scroll Animation Engine
+        function switchWindow(windowId, event) {
+            if (event) {
+                event.preventDefault();
+            }
+
+            // Close mobile dropdown sidebar automatically if it was open
+            const hamburger = document.getElementById('hamburger-btn');
+            if (hamburger.classList.contains('open')) {
+                toggleMobileMenu();
+            }
+
+            // Update active state across both Desktop and Mobile nav link sets
+            const allLinks = document.querySelectorAll('.nav-menu a, .mobile-overlay a');
+            allLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + windowId) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Smooth Window Transition Animation Pipeline
+            const panels = document.querySelectorAll('.window-panel');
+            let currentActive = document.querySelector('.window-panel.active-window');
+            
+            if (currentActive && currentActive.id !== 'window-' + windowId) {
+                // Outbound view window transition
+                currentActive.style.opacity = '0';
+                currentActive.style.transform = 'translateY(-20px)';
+                
+                setTimeout(() => {
+                    currentActive.classList.remove('active-window');
+                    
+                    // Inbound view window transition initialization
+                    const targetPanel = document.getElementById('window-' + windowId);
+                    targetPanel.classList.add('active-window');
+                    
+                    // Smooth viewport scroll to top
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    
+                    // Render frame entry transition
+                    setTimeout(() => {
+                        targetPanel.style.opacity = '1';
+                        targetPanel.style.transform = 'translateY(0)';
+                    }, 50);
+                }, 400); // Matches CSS transition timelines
+            } else {
+                // Enforce fallback viewport anchor reset
+                const targetPanel = document.getElementById('window-' + windowId);
+                if (targetPanel) {
+                    targetPanel.classList.add('active-window');
+                    targetPanel.style.opacity = '1';
+                    targetPanel.style.transform = 'translateY(0)';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+        }
+    </script>
+</body>
+</html>
