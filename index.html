@@ -71,14 +71,14 @@
             display: flex;
             align-items: center;
             text-decoration: none;
-            font-size: 28px;
-            letter-spacing: 1px;
-            color: var(--dark-grey);
+            /* Se eliminó font-size, letter-spacing y color ya que no hay texto */
         }
 
-        .logo-svg {
-            height: 35px;
-            margin-right: 10px;
+        /* ESTA ES LA CLASE QUE MANDA SOBRE TU ARCHIVO PNG */
+        .logo-png {
+            height: 90px; /* Ajusta la altura a tu gusto, la anchura será automática */
+            width: auto;
+            display: block;
         }
 
         .nav-menu {
@@ -666,7 +666,7 @@
             gap: 30px;
         }
 
-        .footer-logo { color: var(--white); }
+        .footer-logo { color: var(--white); display: flex; align-items: center; }
         .footer-info { text-align: right; }
         .footer-tagline {
             color: var(--white);
@@ -705,24 +705,12 @@
 </head>
 <body>
 
-    <!-- Header / Navigation -->
     <header>
         <div class="nav-container">
             <a href="#" class="logo" onclick="switchWindow('inicio', event)">
-                <svg class="logo-svg" viewBox="0 0 500 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="50" r="40" fill="#6a00f4"/>
-                    <path d="M50 50 L85 30 L85 70 Z" fill="#ff0054"/>
-                    <circle cx="150" cy="50" r="40" fill="#ff5400"/>
-                    <rect x="210" y="10" width="80" height="80" fill="#c5f700"/>
-                    <path d="M210 90 L290 10 Z" stroke="#6a00f4" stroke-width="10"/>
-                    <rect x="310" y="10" width="20" height="80" fill="#4cc9f0"/>
-                    <circle cx="410" cy="50" r="40" fill="#bc00dd"/>
-                    <path d="M410 50 L445 30 L445 70 Z" fill="#fea500"/>
-                </svg>
-                <span style="font-weight:700; font-family:'Exo';">CONIC</span>
+                <img src="CONIC.png" alt="Logo CONIC" class="logo-png">
             </a>
             
-            <!-- Computer Menu -->
             <ul class="nav-menu">
                 <li><a href="#inicio" class="nav-link active" onclick="switchWindow('inicio', event)">Inicio</a></li>
                 <li><a href="#propuesta" class="nav-link" onclick="switchWindow('propuesta', event)">Propuesta</a></li>
@@ -732,7 +720,6 @@
                 <li><a href="#contacto" class="btn-cta-nav" onclick="switchWindow('contacto', event)">Contacto</a></li>
             </ul>
 
-            <!-- Mobile Hamburger Trigger -->
             <button class="hamburger" id="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Abrir Menú">
                 <span></span>
                 <span></span>
@@ -741,7 +728,6 @@
         </div>
     </header>
 
-    <!-- Mobile Dropdown Sidebar Menu -->
     <div class="menu-backdrop" id="menu-backdrop" onclick="toggleMobileMenu()"></div>
     <nav class="mobile-overlay" id="mobile-menu">
         <a href="#inicio" class="mobile-link active" onclick="switchWindow('inicio', event)">Inicio</a>
@@ -752,7 +738,6 @@
         <a href="#contacto" class="btn-cta-mobile" onclick="switchWindow('contacto', event)">Contacto</a>
     </nav>
 
-    <!-- INICIO WINDOW -->
     <div id="window-inicio" class="window-panel active-window">
         <section class="hero">
             <div class="hero-container">
@@ -786,7 +771,6 @@
         </section>
     </div>
 
-    <!-- PROPUESTA WINDOW -->
     <div id="window-propuesta" class="window-panel">
         <section class="pillars">
             <h2 class="section-title">Nuestro Enfoque Estratégico</h2>
@@ -813,7 +797,6 @@
         </section>
     </div>
 
-    <!-- SERVICIOS WINDOW -->
     <div id="window-servicios" class="window-panel">
         <section class="services">
             <div style="text-align: center;">
@@ -839,13 +822,12 @@
                 </div>
                 <div class="service-card" style="border-left-color: var(--secondary-green);">
                     <h4>Marketing Digital (SEO + Redes Sociales)</h4>
-                    <p>Analizamos desde varias perspectivas el producto y mercado para crear campañas de publicidad y canales digitales de alto impacto de conversión.</p>
+                    <p>Analizamos desde varias perspectivas el producto y mercado para crear campaigns de publicidad y canales digitales de alto impacto de conversión.</p>
                 </div>
             </div>
         </section>
     </div>
 
-    <!-- METODOLOGIA WINDOW -->
     <div id="window-metodologia" class="window-panel">
         <section class="methodology">
             <div style="text-align: center;">
@@ -905,7 +887,6 @@
         </section>
     </div>
 
-    <!-- BENEFICIOS WINDOW -->
     <div id="window-beneficios" class="window-panel">
         <section class="benefits">
             <div class="benefits-container">
@@ -921,13 +902,12 @@
         </section>
     </div>
 
-    <!-- CONTACTO WINDOW -->
     <div id="window-contacto" class="window-panel">
         <section class="contact-section">
             <div class="contact-box">
-                <h2 class="section-title" style="margin-bottom: 15px;">¡Hablemos de tu Crecimiento!</h2>
+                <h2 class="section-title" style="margin-bottom: 25px;">¡Hablemos de tu Crecimiento!</h2>
                 <p style="color: #666; margin-bottom: 30px;">¿Listo para transformar tus procesos de venta y optimizar tus resultados digitales?</p>
-                <h3 style="margin-bottom: 15px; font-family: 'Exo', sans-serif;">Síguenos en Redes Sociales</h3>
+                <h3 style="margin-bottom: 15px;">Síguenos en Redes Sociales</h3>
                 <a href="https://www.instagram.com/conic.mx" target="_blank" class="instagram-btn">
                     <svg class="instagram-icon" viewBox="0 0 24 24">
                         <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
@@ -938,12 +918,10 @@
         </section>
     </div>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-container">
             <div class="footer-logo">
-                <h3 style="font-size: 24px; letter-spacing: 1px;">CONIC</h3>
-                <p style="margin-top: 5px;">Crecimiento Exponencial</p>
+                <img src="CONIC2.png" alt="Logo CONIC" class="logo-png">
             </div>
             <div class="footer-info">
                 <p class="footer-tagline">La agencia de marketing que sí se compromete.</p>
@@ -951,13 +929,11 @@
             </div>
         </div>
         <div class="copyright">
-            Todos los derechos reservados. Identidad visual regulada bajo el Manual Corporativo CONIC.
+            Todos los derechos reservados. Identidad de marca bajo manual regulado.
         </div>
     </footer>
 
-    <!-- JavaScript to manage App Windows & Mobile Expandable Menu System -->
     <script>
-        // 1. Function to open/close the mobile hamburger dropdown sidebar menu
         function toggleMobileMenu() {
             const hamburger = document.getElementById('hamburger-btn');
             const mobileMenu = document.getElementById('mobile-menu');
@@ -968,54 +944,37 @@
             backdrop.classList.toggle('open');
         }
 
-        // 2. Interactive Navigation Window Switching & Scroll Animation Engine
         function switchWindow(windowId, event) {
-            if (event) {
-                event.preventDefault();
-            }
+            if (event) event.preventDefault();
 
-            // Close mobile dropdown sidebar automatically if it was open
             const hamburger = document.getElementById('hamburger-btn');
-            if (hamburger.classList.contains('open')) {
-                toggleMobileMenu();
-            }
+            if (hamburger.classList.contains('open')) toggleMobileMenu();
 
-            // Update active state across both Desktop and Mobile nav link sets
             const allLinks = document.querySelectorAll('.nav-menu a, .mobile-overlay a');
             allLinks.forEach(link => {
                 link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + windowId) {
-                    link.classList.add('active');
-                }
+                if (link.getAttribute('href') === '#' + windowId) link.classList.add('active');
             });
 
-            // Smooth Window Transition Animation Pipeline
             const panels = document.querySelectorAll('.window-panel');
             let currentActive = document.querySelector('.window-panel.active-window');
             
             if (currentActive && currentActive.id !== 'window-' + windowId) {
-                // Outbound view window transition
                 currentActive.style.opacity = '0';
                 currentActive.style.transform = 'translateY(-20px)';
                 
                 setTimeout(() => {
                     currentActive.classList.remove('active-window');
-                    
-                    // Inbound view window transition initialization
                     const targetPanel = document.getElementById('window-' + windowId);
                     targetPanel.classList.add('active-window');
-                    
-                    // Smooth viewport scroll to top
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     
-                    // Render frame entry transition
                     setTimeout(() => {
                         targetPanel.style.opacity = '1';
                         targetPanel.style.transform = 'translateY(0)';
                     }, 50);
-                }, 400); // Matches CSS transition timelines
+                }, 400);
             } else {
-                // Enforce fallback viewport anchor reset
                 const targetPanel = document.getElementById('window-' + windowId);
                 if (targetPanel) {
                     targetPanel.classList.add('active-window');
