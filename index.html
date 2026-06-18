@@ -51,7 +51,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-image: url('CONIC3.png'); /* Usa el nombre de tu archivo */
+            background-image: url('CONIC3.jpeg'); /* Usa el nombre de tu archivo */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -292,11 +292,12 @@
         }
 
         .hero-content h1 {
-            font-size: 46px;
-            line-height: 1.2;
+             font-size: 46px;
+            line-height: 1.0; /* <--- Ajustado exactamente a 1.0 para juntar las líneas del título */
             margin-bottom: 20px;
-            color: var(--dark-grey);
-        }
+             color: var(--dark-grey);
+        }   
+
 
         .hero-content h1 span.highlight {
             background: linear-gradient(135deg, var(--primary-purple), var(--secondary-pink));
@@ -305,21 +306,28 @@
         }
 
         .hero-tagline {
-            font-size: 20px;
-            color: var(--primary-orange);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-            display: block;
-        }
+    font-size: 16px; /* Lo bajamos un pelín para que estilice mejor con la franja */
+    color: var(--white); /* <--- Letras blancas */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+    
+    /* Creamos la franja de color */
+    background: linear-gradient(135deg, var(--primary-purple), var(--primary-magenta));
+    display: inline-block; /* Para que la franja solo ocupe lo que mide el texto */
+    padding: 6px 16px; /* Espacio interno para que respire el texto dentro de la franja */
+    border-radius: 30px; /* Bordes redondeados estilo píldora/etiqueta */
+    box-shadow: 0 4px 15px rgba(106, 0, 244, 0.2); /* Una sutil sombra para darle relieve */
+}
 
         .hero-description {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 35px;
-            max-width: 600px;
-        }
+    font-size: 16px;
+    color: #666;
+    line-height: 1.4; /* <--- Lo bajamos de 1.6 a 1.4 para que se vea más compacto y estilizado */
+    margin-bottom: 35px;
+    max-width: 600px;
+}
 
         .cta-group {
             display: flex;
@@ -625,32 +633,35 @@
         }
 
         .contact-box {
-            max-width: 600px;
-            width: 100%;
-            margin: 0 auto;
-            background: var(--white);
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-            border: 1px solid #eee;
-        }
+    max-width: 650px; /* La hacemos un pelín más ancha para que mantenga proporción */
+    width: 100%;
+    margin: 0 auto;
+    background: var(--white);
+    
+    /* CAMBIA ESTO: Pasamos de 40px a 60px arriba/abajo y 50px a los lados */
+    padding: 60px 50px; 
+    
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+}
 
         .instagram-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            color: var(--white);
-            text-decoration: none;
-            padding: 14px 32px;
-            border-radius: 50px;
-            font-family: 'Exo', sans-serif;
-            font-weight: 700;
-            font-size: 16px;
-            margin-top: 20px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 5px 20px rgba(220, 39, 67, 0.3);
-        }
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    color: var(--white);
+    text-decoration: none;
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-family: 'Exo', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    margin-top: 45px; /* <--- CAMBIA ESTO: De 20px a 45px para empujarlo hacia abajo y separarlo */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 20px rgba(220, 39, 67, 0.3);
+}
 
         .instagram-btn:hover {
             transform: translateY(-3px);
