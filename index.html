@@ -33,12 +33,31 @@
             scroll-behavior: smooth;
         }
 
+        /* CONFIGURACIÓN DE LA MARCA DE AGUA EN TODO EL SITIO */
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--white);
             color: var(--dark-grey);
             line-height: 1.6;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Creamos un fondo fijo para toda la página */
+        body::before {
+            content: "";
+            position: fixed; /* Se queda quieta mientras haces scroll o cambias de ventana */
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('CONIC3.png'); /* Usa el nombre de tu archivo */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.25; /* Un 5% para que sea sutil en todas las secciones */
+            pointer-events: none; /* No estorba los clics */
+            z-index: -1; /* Va detrás de todo */
         }
 
         h1, h2, h3, .font-exo {
@@ -71,12 +90,10 @@
             display: flex;
             align-items: center;
             text-decoration: none;
-            /* Se eliminó font-size, letter-spacing y color ya que no hay texto */
         }
 
-        /* ESTA ES LA CLASE QUE MANDA SOBRE TU ARCHIVO PNG */
         .logo-png {
-            height: 90px; /* Ajusta la altura a tu gusto, la anchura será automática */
+            height: 90px;
             width: auto;
             display: block;
         }
@@ -157,7 +174,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Hamburger Animation when Active */
         .hamburger.open span:nth-child(1) {
             transform: translateY(9px) rotate(45deg);
             background-color: var(--primary-purple);
@@ -261,6 +277,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
         .hero-container {
@@ -363,7 +380,8 @@
 
         /* Pillars Section (Propuesta) */
         .pillars {
-            background-color: var(--light-bg);
+            /* Cambiado a transparente para que se vea la marca de agua detrás */
+            background-color: rgba(248, 249, 250, 0.7); 
             padding: 80px 20px;
             text-align: center;
         }
@@ -455,7 +473,7 @@
         }
 
         .service-card {
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.9); /* Ligeramente transparente para integrarse con el fondo */
             border: 1px solid #eee;
             border-radius: 12px;
             padding: 35px;
@@ -491,7 +509,7 @@
         /* Methodology */
         .methodology {
             padding: 80px 20px;
-            background-color: var(--dark-grey);
+            background-color: rgba(54, 56, 54, 0.95); /* Opacidad para que la marca de agua también se intuya en oscuro */
             color: var(--white);
         }
 
@@ -551,7 +569,7 @@
         /* Benefits Panel */
         .benefits {
             padding: 80px 20px;
-            background: linear-gradient(135deg, #5100c4 0%, #a100bd 100%);
+            background: linear-gradient(135deg, rgba(81, 0, 196, 0.9) 0%, rgba(161, 0, 189, 0.9) 100%);
             color: var(--white);
             text-align: center;
             display: flex;
@@ -599,7 +617,7 @@
         /* Contact Section */
         .contact-section {
             padding: 80px 20px;
-            background-color: var(--light-bg);
+            background-color: rgba(248, 249, 250, 0.7);
             text-align: center;
             display: flex;
             align-items: center;
@@ -680,10 +698,10 @@
         /* Responsive Breakpoints */
         @media (max-width: 900px) {
             .nav-menu {
-                display: none; /* Hide computer tabs menu */
+                display: none;
             }
             .hamburger {
-                display: flex; /* Show dropdown menu trigger */
+                display: flex;
             }
             .hero-container {
                 grid-template-columns: 1fr;
@@ -810,7 +828,7 @@
                 </div>
                 <div class="service-card" style="border-left-color: var(--primary-orange);">
                     <h4>Creación de Imagen de Marca</h4>
-                    <p>Compartimos ideas, conocimientos y experiencias para ayudarte a crear una semilla poderosa. Diseñamos la identidad corporativa integral para comunicar de forma clara y positiva.</p>
+                    <p>Compartimos ideas, conocimientos y experiences para ayudarte a crear una semilla poderosa. Diseñamos la identidad corporativa integral para comunicar de forma clara y positiva.</p>
                 </div>
                 <div class="service-card" style="border-left-color: var(--primary-magenta);">
                     <h4>Creación de Canales Digitales</h4>
@@ -822,7 +840,7 @@
                 </div>
                 <div class="service-card" style="border-left-color: var(--secondary-green);">
                     <h4>Marketing Digital (SEO + Redes Sociales)</h4>
-                    <p>Analizamos desde varias perspectivas el producto y mercado para crear campaigns de publicidad y canales digitales de alto impacto de conversión.</p>
+                    <p>Analizamos desde varias perspectivas el producto y mercado para crear campañas de publicidad y canales digitales de alto impacto de conversión.</p>
                 </div>
             </div>
         </section>
