@@ -973,46 +973,77 @@
             backdrop.classList.toggle('open');
         }
 
-        function switchWindow(windowId, event) {
-            if (event) event.preventDefault();
+        // Variable para evitar bucles en el historial al hacer clic
+let isNavigatingHistory = false;
 
-            const hamburger = document.getElementById('hamburger-btn');
-            if (hamburger.classList.contains('open')) toggleMobileMenu();
+function switchWindow(windowId, event, isHistoryStep = false) {
+    if (event) event.preventDefault();
 
-            const allLinks = document.querySelectorAll('.nav-menu a, .mobile-overlay a');
-            allLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + windowId) link.classList.add('active');
-            });
+    // Si el usuario hace clic en el menú (y no es navegación del historial), guardamos el estado
+    if (!isHistoryStep) {
+        history.pushState({ windowId: windowId }, "", "#" + windowId);
+    }
 
-            const panels = document.querySelectorAll('.window-panel');
-            let currentActive = document.querySelector('.window-panel.active-window');
-            
-            if (currentActive && currentActive.id !== 'window-' + windowId) {
-                currentActive.style.opacity = '0';
-                currentActive.style.transform = 'translateY(-20px)';
+    const hamburger = document.getElementById('hamburger-btn');
+    if (hamburger && hamburger.classList.contains('open')) toggleMobileMenu();
+
+    const allLinks = document.querySelectorAll('.nav-menu a, .mobile-overlay a');
+    allLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + windowId) link.classList.add('active');
+    });
+
+    const panels = document.querySelectorAll('.window-panel');
+    let currentActive = document.querySelector('.window-panel.active-window');
+    
+    if (currentActive && currentActive.id !== 'window-' + windowId) {
+        currentActive.style.opacity = '0';
+        currentActive.style.transform = 'translateY(-20px)';
+        
+        setTimeout(() => {
+            currentActive.classList.remove('active-window');
+            const targetPanel = document.getElementById('window-' + windowId);
+            if (targetPanel) {
+                targetPanel.classList.add('active-window');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
                 
                 setTimeout(() => {
-                    currentActive.classList.remove('active-window');
-                    const targetPanel = document.getElementById('window-' + windowId);
-                    targetPanel.classList.add('active-window');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                    
-                    setTimeout(() => {
-                        targetPanel.style.opacity = '1';
-                        targetPanel.style.transform = 'translateY(0)';
-                    }, 50);
-                }, 400);
-            } else {
-                const targetPanel = document.getElementById('window-' + windowId);
-                if (targetPanel) {
-                    targetPanel.classList.add('active-window');
                     targetPanel.style.opacity = '1';
                     targetPanel.style.transform = 'translateY(0)';
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
+                }, 50);
             }
+        }, 400);
+    } else {
+        const targetPanel = document.getElementById('window-' + windowId);
+        if (targetPanel) {
+            targetPanel.classList.add('active-window');
+            targetPanel.style.opacity = '1';
+            targetPanel.style.transform = 'translateY(0)';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+    }
+}
+
+/* DETECTAR CUANDO EL USUARIO DA ATRÁS/ADELANTE EN MÓVIL O COMPUTADORA */
+window.addEventListener('popstate', function(event) {
+    if (event.state && event.state.windowId) {
+        // Carga la sección que le corresponde al historial
+        switchWindow(event.state.windowId, null, true);
+    } else {
+        // Si no hay estado registrado (ej. volvió al inicio del todo), muestra la ventana de inicio
+        switchWindow('inicio', null, true);
+    }
+});
+
+/* AL CARGAR LA PÁGINA POR PRIMERA VEZ */
+window.addEventListener('DOMContentLoaded', function() {
+    // Si la URL viene con un hashtag (ej. tusitio.com/#servicios), abre esa ventana directo
+    const hash = window.location.hash.replace('#', '');
+    const initialWindow = hash || 'inicio';
+    
+    // Guardamos el estado inicial en el historial
+    history.replaceState({ windowId: initialWindow }, "", "#" + initialWindow);
+});
     </script>
 </body>
 </html>
